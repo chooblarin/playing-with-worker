@@ -1,8 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import logo from "./logo.svg";
+import Worker from "./worker";
+
+const instance = new Worker();
 
 function App() {
+  const [message, setMessage] = useState("");
+  const handleButtonClick = () => {
+    instance.expensive(3000).then((count) => {
+      const m = `Ran ${count} loops`;
+      setMessage(m);
+      console.log(m);
+    });
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -10,14 +22,8 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button onClick={handleButtonClick}>Start expensive work</button>
+        {message && <p>{message}</p>}
       </header>
     </div>
   );
